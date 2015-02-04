@@ -1,0 +1,5 @@
+BinSourcerer
+Copyright 2014 Concordia University
+
+This product includes software developed by
+Felix Leder <felix<dot>leder<at>gmx<dot>net>. 

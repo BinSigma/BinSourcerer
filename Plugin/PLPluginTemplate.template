@@ -1,0 +1,191 @@
+#!/usr/bin/env python
+# -*-coding: utf8 -*-
+
+########################################################################
+# Copyright 2014 Concordia University
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+# either express or implied. See the License for the specific language
+# governing permissions and limitations under the License.
+########################################################################
+# This Python script is part of BinSourcerer, a framework
+# for assembly to source code matching
+#
+# Status: Debug
+#
+########################################################################
+
+########################################################################
+#
+#
+# This file contains a lot of informations about how to build plugins 
+# for the BinSourcerer framework. You can also rely on many more
+# informations inside the BSPluginManager.py file that also has many
+# "how" about writting plugins for BinSourcerer. In every cases, other
+# built-in plugins comments and code should be enough to help you 
+# understand how you should build your own plugin.
+# 
+#
+########################################################################
+
+
+#-----------------------------------------------------------------------
+# Configuration agent
+# The two next function are needed so the configuration manager will be
+# able to provide configuration for this module.
+# configurationNeed is called first. If no config for this 
+# utility exists, user is prompted for utility configuration. If
+# configuration exists, previous configs will be used. In all cases,
+# configuration step is ended when configurationProvision
+# is called with a configuration list as arg.
+#-----------------------------------------------------------------------
+def configurationNeed():
+    return None #This utility does not need configuration
+            
+def configurationProvision(utilityConfig=[]):
+    pass #This utility does not need configuration
+
+#----------------------------------------------------------------------
+# Plugin type
+# Since many plugins with diferent capabilities can be integrated
+# to the framework, we need a general method to understand the
+# use of each plugin in a unified way. The value returned by this method
+# will allow the framework to call the right operations on the plugin.
+# for more information about plugin types, see related comment inside
+# BSPluginManager.py
+#----------------------------------------------------------------------
+def identifyPluginType():
+    return ["searcher"] 
+    
+#-----------------------------------------------------------------------
+# Plugin name
+# This is used so the framework can give a name to a specific plugin
+# The first name is used to identify the plugin inside the framework.
+# The seccond name will be used to visualy identify each plugins.
+#-----------------------------------------------------------------------
+def identifyPlugin():
+    #First item in list have to have the same name as main class name. Second item in list is visual name
+    return ["InnerName", "UI Name"] 
+
+'''
+Mandatory extractor method
+If plugin is an extractor, it should ask for UI_DEFAULT_EXTRACTOR_CHOICE configuration.
+#-----------------------------------------------------------------------
+# Check when showed in the UI
+# This method is used to tell UI if this extractor should be checked
+# when showed in the UI. Visual identification(identifyPlugin()[1]) is used as choice.
+#-----------------------------------------------------------------------
+def defaultCheckChoice():
+    selfIdentity = identifyPlugin()
+    
+    if selfIdentity[1] == UI_DEFAULT_EXTRACTOR_CHOICE:
+        return True
+    return False
+'''
+  
+#-----------------------------------------------------------------------
+# PLUGINNAME
+# This class implements X capabilities
+#-----------------------------------------------------------------------
+class PLUGINNAME():
+
+    def __init__(self, plMngr):
+        self._manager = plMngr
+
+    '''
+    # Mandatory method for searcher plugin
+    # If searcher only does local (not out on the web) searches, this should return
+    # True, otherwise, is returns False.
+    #
+    # This method can simply be removed if plugin is NOT a searcher
+    #
+    # This method is used to manage request timing. Local search engines
+    # do not need wait time in between request. This method will be called
+    # by the control manager when managing search or analysis requests.
+    #
+    def isLocal(self):
+        return False
+    '''
+    
+    '''
+    # Mandatory method for searcher plugin
+    # If plugin is a searcher, this method will be called when
+    # the control manager needs the plugin to do a search job.
+    #
+    # This method can simply be removed if plugin is NOT a searcher
+    #
+    # Main search plugin function, returns HTML string
+    # that can be used by the report manager.
+    #
+    def pluginSearch(self, searchList):
+        pass
+    '''
+    
+    '''
+    # Mandatory method for analyser plugin
+    # If plugin is an analyser, this method will be called when
+    # the control manager needs the plugin to do a analysis.
+    #
+    # This method can simply be removed if plugin is NOT an analyser
+    #
+    # Main analisys plugin function, returns HTML string
+    # that can be used by the report manager.
+    #
+    def pluginAnalyse(self, analyseList):
+        pass
+    '''
+    
+    '''
+    # Mandatory method for extractor plugin 
+    # If plugin is an extractor, this method will be called when 
+    # it's time to display this extractor UI plugin.
+    #
+    # This method can simply be removed if plugin is NOT an extractor
+    #
+    # When this method is called, the UI related to this extractor
+    # is about to be displayed. This method has to return a string
+    # containing the class name (inner name) of the right UI module
+    # to be displayed for this extractor.
+    #
+    def getUI(self):
+        return "UIClassName"
+    '''
+    
+    '''
+    # Mandatory method for extractor plugin 
+    # If plugin is an extractor, this method will be called when
+    # the control manager needs the plugin to do a extraction job.
+    #
+    #
+    # This method can simply be removed if plugin is NOT an extractor
+    #
+    # This method is in charge of features extraction
+    # management. You should refer to other extractor plugins in order
+    # to have a better understanding of how extractors are implemented.
+    #
+    def pluginExtract(self, functionList, selectedEas):
+        result = []
+        
+        for function in functionList:
+            if function[0][1] in selectedEas:
+                result.append((function[0][0], function[1]))
+                
+        return result
+    '''
+ 
+
+#-----------------------------------------------------------------------
+# __main__
+# QA main for this module
+#-----------------------------------------------------------------------
+if __name__ == "__main__":
+
+    x = PLUGINNAME(None)
+
+
+   
