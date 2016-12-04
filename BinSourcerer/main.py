@@ -72,7 +72,7 @@ class BinSourcererCore():
         ####    self._CfMngr.activateConfiguration()
     
         #Lets start BinSourcerer!
-        self.app = QApplication([])
+        self.app = QApplication.instance()
         self._mainWindow = self._UIMngr.call("MainWindow", self._UIMngr, '')
         self._mainWindow.show()
         self.app.exec_()
